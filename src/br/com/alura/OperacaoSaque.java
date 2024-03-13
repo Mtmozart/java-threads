@@ -26,6 +26,7 @@ public class OperacaoSaque implements Runnable{
 
     @Override
     public void run() {
-
+    this.executa();
+        System.out.println( Thread.currentThread().getName());
     }
 }
