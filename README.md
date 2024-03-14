@@ -46,5 +46,60 @@ multiplicador.start();
 
 Ponto negativo: Herança por preguiça: Refere-se à prática de herdar ou estender uma classe simplesmente para reutilizar código, sem considerar adequadamente a relação de herança e a estrutura do sistema.
 
+Condição corrida: duas threads tentando acessar o mesmo recurso, como evitar:
+
+```Java
+public class Contador {
+private int contagem = 0;
+
+    public void incrementar() {
+        synchronized (this) {
+            contagem++;
+        }
+        System.out.println(“Incrementado com sucesso!”)
+    }
+}
+//Método geral de sicronnização:
+synchronized (objeto a se sincronizar) {
+parte do código a ser sincronizada
+}
+```
+
+"lock intrínseco" ou "monitor interno". Cada objeto em Java tem um lock intrínseco associado a ele. Quando um método é synchronized, ele usa o lock do objeto. Se for um método estático synchronized, ele usa o lock do objeto que representa a classe (Class object).
+Implementação:
+```Java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Contador {
+private int contagem = 0;
+private final Lock lock = new ReentrantLock();
+
+    public void incrementar() {
+        lock.lock();
+        try {
+            contagem++;
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+- importante: método join -- Utilizado após iniciar um thread, para evitar erros, em uma thread, isso faz com que a thread atual (a que chama o join()) espere até que a thread em que o método join() foi chamado seja encerrada.
+
+conforme exemplo:   
+```Java
+saqueJoao.start();
+saqueMaria.start();
+
+  try {
+          saqueDoJoao.join();
+            saqueDaMaria.join();
+        } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+        }
+
+```
+
 
 
